@@ -36,7 +36,7 @@ exports.signin = async (req, res) => {
 exports.verifyToken = (req, res) => {
     let {token} = req.body;
     jwt.verify(token, 'privateKey', function(err, decoded) {
-        if(err) return res.status(403).send({success: false, body: {message: 'Token invalido'}})
+        if(err) return res.status(200).send({success: false, body: {message: 'Token invalido'}})
         res.status(200).send({success: true, body: {message: 'Token valido', decoded}})
     });
 }

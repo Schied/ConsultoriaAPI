@@ -33,8 +33,8 @@ exports.isEmpresa = (req, res, next) => {
 }
 
 exports.create = (req, res) => {
-    const {Nombre_emp, Identificacion_emp, Tdocumento_td, Codigo_emp, Celular_emp, Telefono_emp, Correo_emp, Nombre_asistente_emp, Codigo_usu} = req.body;    
-    pool.query(`INSERT INTO empresa VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`, [Nombre_emp, Identificacion_emp, Tdocumento_td, Codigo_emp, Celular_emp, Telefono_emp, Correo_emp, Nombre_asistente_emp, Codigo_usu], (err, results) => {
+    const {Nombre_emp, Tdocumento_td, Codigo_emp, Celular_emp, Telefono_emp, Correo_emp, Codigo_usu} = req.body;    
+    pool.query(`INSERT INTO empresa VALUES (?, ?, ?, ?, ?, ?, ?)`, [Nombre_emp, Tdocumento_td, Codigo_emp, Celular_emp, Telefono_emp, Correo_emp, Codigo_usu], (err, results) => {
         if (err) return res.status(500).send({success: false, body: err});
         res.status(201).send({success: true, body: results});
     });
