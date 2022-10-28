@@ -28,7 +28,7 @@ exports.create = (req, res, next) => {
     let Fecha_inicio_fp = new Date;
     pool.query("SELECT * FROM fecha_proceso", (err, results) => {
         if (err) return res.status(500).send({success: false, body: err});
-        if(Fecha_inicio_fp > results[0].Fecha_inicio_fp && Fecha_inicio_fp < results[0].Fecha_fin_fp){
+        if(Fecha_inicio_fp > results[0].Fecha_inicio_fp && Fecha_inicio_fp < results[0].Fecha_fin_fp && Fecha_inicio_fp < results[0].Fecha_estado_fp){
             pool.query("INSERT INTO consulta(Codigo_emp,Nombre_cta,Fase_cta,Fecha_inicio,Fecha_fin) VALUES (?,?,?,?,?)", [Codigo_emp, Nombre_cta, 1, Fecha_inicio_fp, ""], (err, results) => {
                 if(err) return res.status(500).send({success: false, body: err})
                 req.body.relation = results.insertId;
