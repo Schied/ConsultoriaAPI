@@ -9,7 +9,8 @@ const authRoutes = require('./routes/auth');
 const pgRoutes = require('./routes/pg');
 const tipoDocRoutes = require('./routes/tipoDoc');
 const empRoutes = require('./routes/emp');
-
+const ctaRoutes = require('./routes/procesos/cta');
+const fechaRoutes = require('./routes/procesos/fechaP');
 
 //middlewares
 app.use(cors());
@@ -23,7 +24,8 @@ app.use('/user/auth', authRoutes);
 app.use('/pg', pgRoutes);
 app.use('/tdoc', tipoDocRoutes);
 app.use('/emp', empRoutes);
-
+app.use('/cta', ctaRoutes);
+app.use('/fecha', fechaRoutes);
 
 
 module.exports = app;
