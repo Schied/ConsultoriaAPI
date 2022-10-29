@@ -8,7 +8,7 @@ const pool  = mysql.createPool({
 });
 
 exports.getPgs = (req, res) => {
-    const response = pool.query('SELECT * FROM programa', (err, results) => {
+    const response = pool.query('SELECT * FROM programa WHERE Nombre_pg != ? AND Nombre_pg != ?',["Administrador", "Empresa"], (err, results) => {
         if (err) return res.status(500).send({success: false, body: err});
         res.status(200).send({success: true, body: results});
     });
