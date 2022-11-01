@@ -16,11 +16,20 @@ exports.getEmps = (req, res) => {
 
 exports.getEmp = (req, res) => {
     let {id} = req.params;
-    const response = pool.query('SELECT * FROM empresa WHERE Identificacion_emp = ?', [id], (err, results) => {
+    const response = pool.query('SELECT * FROM empresa WHERE Codigo_emp = ?', [id], (err, results) => {
         if (err) return res.status(500).send({success: false, body: err});
         if (!results.length > 0) return res.status(404).send({success: false, body: {message:  'No encontrado'}})
         res.status(200).send({success: true, body: results});
     });
+}
+
+exports.getRelation = (req, res) => {
+    let {id} = req.params;
+    pool.query("SELECT empresa.Nombre_emp, usuario.Nombre_usu FROM empresa INNER JOIN usuario ON empresa.Codigo_usu = usuario.Codigo_usu WHERE empresa.Codigo_emp = ?", [id], (err, results) => {
+        if (err) return res.status(500).send({success: false, body: err});
+        if (!results.length > 0) return res.status(404).send({success: false, body: {message:  'No encontrado'}})
+        res.status(200).send({success: true, body: results});
+    })
 }
 
 exports.isEmpresa = (req, res, next) => {
