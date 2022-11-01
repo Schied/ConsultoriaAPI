@@ -31,7 +31,32 @@ exports.getEncuentro = (req, res) => {
 }
 
 exports.create = (req, res, next) => {
-
+    let datos = req.body.datos;
+    pool.query("INSERT INTO consulta(Codigo_emp,Nombre_cta,Fase_cta,Fecha_inicio,Fecha_fin) VALUES (?,?,?,?,?)", [Codigo_emp, Nombre_cta, 1, Fecha_inicio_fp, ""], (err, results) => {
+        if(err) return res.status(500).send({success: false, body: err})
+        req.body.relation = results.insertId;
+        next();
+    })
+    let encuentro = {
+        datos: {
+            Descripcion_pro_enc: "",
+            Personal_pro_enc: "",
+            Observaciones_pro_enc: "",
+            Id_cta,
+        },
+        epp: [
+            [Elemento_epp,Descripcion_epp]
+        ],
+        equipo: [
+            [Nombre_equipo, Descripcion_equipo]
+        ],
+        parametro: [
+            [Descripcion_param]
+        ],
+        actividad: [
+            [Nombre_act, Descripcion_act, Calidad_act, Seguridad_act, Ambiente_act]
+        ]
+    }
 }
 
 exports.relation = (req, res) => {
