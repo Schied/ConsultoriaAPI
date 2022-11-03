@@ -14,6 +14,15 @@ exports.getCtas = (req, res) => {
     });
 }
 
+exports.getCtaByUser = (req, res) => {
+    let {id} = req.params;
+    const response = pool.query('SELECT consulta.Id_cta as Id_cta, consulta.Codigo_emp as Codigo_emp, consulta.Nombre_cta as Nombre_cta, consulta.Fase_cta as Fase_cta, consulta.Fecha_inicio as Fecha_inicio, consulta.Fecha_fin as Fecha_fin FROM consulta INNER JOIN usuario_consulta ON consulta.Id_cta = usuario_consulta.Id_cta WHERE usuario_consulta.Codigo_usu = ?', [id], (err, results) => {
+        if (err) return res.status(500).send({success: false, body: err});
+        if (!results.length > 0) return res.status(404).send({success: false, body: {message:  'No encontrado'}})
+        res.status(200).send({success: true, body: results});
+    });
+}
+
 exports.getCtaById = (req, res) => {
     let {id} = req.params;
     const response = pool.query('SELECT * FROM consulta WHERE Id_cta = ?', [id], (err, results) => {

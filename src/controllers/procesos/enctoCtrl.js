@@ -7,6 +7,7 @@ const pool = mysql.createPool({
   database: "consultoria_db",
 });
 
+
 exports.getEncuentro = (req, res, next) => {
   let { id } = req.params;
   req.body.encuentro = {
