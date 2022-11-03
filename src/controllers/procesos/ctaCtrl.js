@@ -14,9 +14,27 @@ exports.getCtas = (req, res) => {
     });
 }
 
-exports.getCta = (req, res) => {
+exports.getCtaById = (req, res) => {
     let {id} = req.params;
     const response = pool.query('SELECT * FROM consulta WHERE Id_cta = ?', [id], (err, results) => {
+        if (err) return res.status(500).send({success: false, body: err});
+        if (!results.length > 0) return res.status(404).send({success: false, body: {message:  'No encontrado'}})
+        res.status(200).send({success: true, body: results});
+    });
+}
+
+exports.getCtaByName = (req, res) => {
+    let {name} = req.params;
+    const response = pool.query('SELECT * FROM consulta WHERE Nombre_cta LIKE ?', ["%"+name+"%"], (err, results) => {
+        if (err) return res.status(500).send({success: false, body: err});
+        if (!results.length > 0) return res.status(404).send({success: false, body: {message:  'No encontrado'}})
+        res.status(200).send({success: true, body: results});
+    });
+}
+
+exports.getCtaByIdEmpresa = (req, res) => {
+    let {id} = req.params;
+    const response = pool.query('SELECT * FROM consulta WHERE Codigo_emp = ?', [id], (err, results) => {
         if (err) return res.status(500).send({success: false, body: err});
         if (!results.length > 0) return res.status(404).send({success: false, body: {message:  'No encontrado'}})
         res.status(200).send({success: true, body: results});
