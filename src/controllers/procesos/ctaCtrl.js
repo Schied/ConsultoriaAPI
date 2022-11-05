@@ -80,3 +80,33 @@ exports.relation = (req, res) => {
     return res.status(201).send({success: true, body: {message: "Se han insertado las relaciones al proceso numero: "+req.body.relation}});
     
 }
+
+exports.getFirmas = (req, res) => {
+    let {id} = req.params;
+    let param = "";
+    pool.query('SELECT * FROM consulta WHERE Id_cta = ?', [id], (err, results) => {
+        if (err) return res.status(500).send({success: false, body: err});
+        if (!results.length > 0) return res.status(404).send({success: false, body: {message:  'No encontrado'}})
+        if(results[0].Fase_cta==1) param = "Firma_encuentro";
+        if(results[0].Fase_cta==2) param = "Firma_desarrollo";
+        if(results[0].Fase_cta==3) param = "Firma_cierre";
+        if(results[0].Fase_cta==4) return res.status(404).send({success: false, body: {message:  'El proceso ya ha finalizado'}})
+        pool.query(`SELECT usuario.Nombre_usu as Nombre_usu, usuario.Tipo_usu as Tipo_usu, usuario_consulta.${param} FROM usuario_consulta INNER JOIN usuario ON usuario_consulta.Codigo_usu = usuario.Codigo_usu WHERE Id_cta = ?`, [id], (err, results) => {
+            if (err) return res.status(500).send({success: false, body: err});
+            res.status(200).send({success: true, body: results});
+        });
+    });
+    
+}
+
+exports.firmarFase = (req, res) => {
+    let {Codigo_usu, Id_cta, Fase_id, Firma} = req.body;
+    let fase = "";
+    if(Fase_id == 1) fase = "Firma_encuentro";
+    if(Fase_id == 2) fase = "Firma_desarrollo";
+    if(Fase_id == 3) fase = "Firma_cierre";
+    pool.query(`UPDATE usuario_consulta SET ${fase} = ? WHERE Codigo_usu = ? AND Id_cta = ?`, [Firma, Codigo_usu,Id_cta], (err, results) => {
+        if (err) return res.status(500).send({success: false, body: err});
+        res.status(200).send({success: true, body: results});
+    })
+  }
