@@ -13,6 +13,7 @@ const ctaRoutes = require('./routes/procesos/cta');
 const fechaRoutes = require('./routes/procesos/fechaP');
 const enctoRoutes = require('./routes/procesos/encto');
 const dsrlloRoutes = require('./routes/procesos/dsrllo');
+const cierreRoutes = require('./routes/procesos/cierre');
 
 //middlewares
 app.use(cors());
@@ -30,5 +31,6 @@ app.use('/fecha', fechaRoutes);
 app.use('/cta', ctaRoutes);
 app.use('/encto', enctoRoutes)
 app.use('/dsrllo', dsrlloRoutes);
+app.use('/cierre', cierreRoutes);
 
 module.exports = app;
